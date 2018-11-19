@@ -1,0 +1,106 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: VoicePrompt - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Debug/VoicePrompt.res" /d "_DEBUG" /d "_AFXDLL" "D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoicePrompt.rc"" 
+Creating temporary file "C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP19.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/VoicePrompt.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\AddBatchInfor.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\BatchListCtrl.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\BatchOutput.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\BatchOutputOption.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\cOutputFiles.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\EnumInfo.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\FileDialogEx.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\LanguagePackInfo.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\MyProgressCtrl.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoiceDataManage.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoicePrompt.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoicePrompt_Option.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoicePromptDlg.cpp"
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoicePromptListCtrl.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP19.tmp" 
+Creating temporary file "C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP1A.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/VoicePrompt.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\computerfile\program\C++\VoicePrompt\VoicePrompt\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP1A.tmp" 
+Creating temporary file "C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP1B.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/VoicePrompt.pdb" /debug /machine:I386 /out:"Debug/VoicePrompt.exe" /pdbtype:sept 
+".\Debug\AddBatchInfor.obj"
+".\Debug\BatchListCtrl.obj"
+".\Debug\BatchOutput.obj"
+".\Debug\BatchOutputOption.obj"
+".\Debug\cOutputFiles.obj"
+".\Debug\EnumInfo.obj"
+".\Debug\FileDialogEx.obj"
+".\Debug\LanguagePackInfo.obj"
+".\Debug\MyProgressCtrl.obj"
+".\Debug\StdAfx.obj"
+".\Debug\VoiceDataManage.obj"
+".\Debug\VoicePrompt.obj"
+".\Debug\VoicePrompt_Option.obj"
+".\Debug\VoicePromptDlg.obj"
+".\Debug\VoicePromptListCtrl.obj"
+".\Debug\VoicePrompt.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP1B.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AddBatchInfor.cpp
+BatchListCtrl.cpp
+BatchOutput.cpp
+BatchOutputOption.cpp
+cOutputFiles.cpp
+EnumInfo.cpp
+FileDialogEx.cpp
+LanguagePackInfo.cpp
+MyProgressCtrl.cpp
+VoiceDataManage.cpp
+VoicePrompt.cpp
+VoicePrompt_Option.cpp
+VoicePromptDlg.cpp
+D:\computerfile\program\C++\VoicePrompt\VoicePrompt\VoicePromptDlg.cpp(1589) : warning C4101: 'e' : unreferenced local variable
+VoicePromptListCtrl.cpp
+Generating Code...
+Linking...
+Creating temporary file "C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP1D.tmp" with contents
+[
+/nologo /o"Debug/VoicePrompt.bsc" 
+".\Debug\StdAfx.sbr"
+".\Debug\AddBatchInfor.sbr"
+".\Debug\BatchListCtrl.sbr"
+".\Debug\BatchOutput.sbr"
+".\Debug\BatchOutputOption.sbr"
+".\Debug\cOutputFiles.sbr"
+".\Debug\EnumInfo.sbr"
+".\Debug\FileDialogEx.sbr"
+".\Debug\LanguagePackInfo.sbr"
+".\Debug\MyProgressCtrl.sbr"
+".\Debug\VoiceDataManage.sbr"
+".\Debug\VoicePrompt.sbr"
+".\Debug\VoicePrompt_Option.sbr"
+".\Debug\VoicePromptDlg.sbr"
+".\Debug\VoicePromptListCtrl.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\zysmart\LOCALS~1\Temp\RSP1D.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+VoicePrompt.exe - 0 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

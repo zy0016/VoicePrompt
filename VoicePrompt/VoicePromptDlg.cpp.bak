@@ -1,0 +1,971 @@
+// VoicePromptDlg.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "VoicePrompt.h"
+#include "VoicePromptDlg.h"
+#include "voicepromptinfo.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+static const CString csSlash        = _T("\\");
+static const CString DefaultEnumFileinformation[] =
+{
+    "\\9_insert_simcard.amr",
+    "\\10_call_history.amr",
+    "\\11_change_ringtone.amr",
+    "\\12_set_alarm.amr",
+    "\\13_change_time.amr",
+    "\\14_send_a_message.amr",
+    "\\15_read_messages.amr",
+    "\\44_if_youd_like_to_hear_help.amr",
+    "\\mandarin_english.amr",
+    "\\5_error.amr",
+    "\\24_enter_sim_pin.amr",
+    "\\4_press_up_to_delete.amr", 
+    "\\46_press_right.amr",
+    "\\17_write_your_message.amr",
+    "\\18_Enter_number_or_press_phone.amr",
+    "\\21_enter_new_sim_pin.amr",
+    "\\25_wrong_code.amr",
+    "\\27_enter_puk_code.amr",
+    "\\28_write_name.amr",
+    "\\29_enter_pin.amr",
+    "\\35_enter_new_sim_pin.amr",
+    "\\1_enter_time.amr",
+    "\\47_new_sms.amr",
+    "\\22_enter_subsidy_pin.amr",
+    "\\32_enter_sms_prepaid_code.amr",
+    "\\20_sim_disabled.amr",
+    "\\2_am.amr",
+    "\\2b_pm.amr",
+    "\\3_no_calls.amr",
+    "\\6_to_make_a_call.amr",
+    "\\7_to_store_a_phone_number.amr", 
+    "\\8_press_phonebook_button_to_call.amr",
+    "\\8b_change_volume_alt.amr",
+    "\\16_cant_display_message_in_this_language.amr",
+    "\\33_enter_voicemail_number.amr",
+    "\\37_new_voicemail.amr",
+    "\\39_no_messages.amr",
+    ""
+};
+static const float fKunit = 1024.0;
+
+/////////////////////////////////////////////////////////////////////////////
+// CAboutDlg dialog used for App About
+
+class CAboutDlg : public CDialog
+{
+public:
+	CAboutDlg();
+
+// Dialog Data
+	//{{AFX_DATA(CAboutDlg)
+	enum { IDD = IDD_ABOUTBOX };
+	//}}AFX_DATA
+
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CAboutDlg)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	//{{AFX_MSG(CAboutDlg)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+{
+	//{{AFX_DATA_INIT(CAboutDlg)
+	//}}AFX_DATA_INIT
+}
+
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CAboutDlg)
+	//}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+	//{{AFX_MSG_MAP(CAboutDlg)
+		// No message handlers
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CVoicePromptDlg dialog
+
+CVoicePromptDlg::CVoicePromptDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CVoicePromptDlg::IDD, pParent)
+{
+	//{{AFX_DATA_INIT(CVoicePromptDlg)
+	//}}AFX_DATA_INIT
+	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+
+void CVoicePromptDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CVoicePromptDlg)
+	DDX_Control(pDX, IDC_STATIC_ALLSIZE, m_Static_Filesize);
+	DDX_Control(pDX, IDC_BUTTON_DELETELANGUAGE, m_DeleteLanguage);
+	DDX_Control(pDX, IDC_LIST_ENUMINFO, m_VoicePromptListCtrl);
+	DDX_Control(pDX, IDC_BUTTON_LANGUAGEDOWN, m_Language_Down);
+	DDX_Control(pDX, IDC_BUTTON_LANGUAGEUP, m_Language_Up);
+	DDX_Control(pDX, IDC_BUTTON_ADDLANGUAGE, m_Button_AddLanguage);
+	DDX_Control(pDX, IDC_EDIT_LANGUAGE, m_Edit_Language);
+	//}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_LIST_LANGUAGE, m_ctlCheckList);
+}
+
+BEGIN_MESSAGE_MAP(CVoicePromptDlg, CDialog)
+	//{{AFX_MSG_MAP(CVoicePromptDlg)
+	ON_WM_SYSCOMMAND()
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_EN_CHANGE(IDC_EDIT_LANGUAGE, OnChangeEditLanguage)
+	ON_LBN_SELCHANGE(IDC_LIST_LANGUAGE, OnSelchangeListLanguage)
+	ON_BN_CLICKED(IDC_BUTTON_ADDLANGUAGE, OnButtonAddlanguage)
+	ON_BN_CLICKED(IDC_BUTTON_DELETELANGUAGE, OnButtonDeletelanguage)
+	ON_BN_CLICKED(IDC_BUTTON_LANGUAGEUP, OnButtonLanguageup)
+	ON_BN_CLICKED(IDC_BUTTON_LANGUAGEDOWN, OnButtonLanguagedown)
+	ON_BN_CLICKED(IDC_BUTTON_OPTION, OnButtonOption)
+	ON_BN_CLICKED(IDC_BUTTON_CREATECONFIG, OnButtonCreateconfig)
+	ON_BN_CLICKED(IDC_BUTTON_OUTPUTFILES, OnButtonOutputfiles)
+	ON_BN_CLICKED(IDC_BUTTON_COUNTLANGUAGESSIZE, OnButtonCountlanguagessize)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CVoicePromptDlg message handlers
+
+BOOL CVoicePromptDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	// Add "About..." menu item to system menu.
+
+	// IDM_ABOUTBOX must be in the system command range.
+	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+	ASSERT(IDM_ABOUTBOX < 0xF000);
+
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	if (pSysMenu != NULL)
+	{
+		CString strAboutMenu;
+		strAboutMenu.LoadString(IDS_ABOUTBOX);
+		if (!strAboutMenu.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+		}
+	}
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+	
+	// TODO: Add extra initialization here
+	TCHAR szBuf[512] = "";
+    //AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    //hins=AfxGetInstanceHandle();
+    GetCurrentDirectory(sizeof(szBuf),szBuf);
+    CurrentAppPath = szBuf;
+    //GetModuleFileName(AfxGetInstanceHandle(),szBuf,sizeof(szBuf));//获得当前应用的具体名称,包括路径
+    //GetModuleFileName(NULL,szBuf,sizeof(szBuf));//也可以    
+
+    //**********************************************
+    m_ctlCheckList.ResetContent();
+	//m_ctlCheckList.SetCheckStyle( BS_AUTO3STATE );
+
+    m_Language_Up.EnableWindow(FALSE);
+    m_Language_Down.EnableWindow(FALSE);
+    m_Button_AddLanguage.EnableWindow(FALSE);
+    //**********************************************
+    m_VoicePromptListCtrl.SetListCtrlText();
+
+    ReadConfigFile();
+    //m_VoicePromptListCtrl.InsertColumn(0,"Enum Name",LVCFMT_LEFT,300,0);
+    //m_VoicePromptListCtrl.InsertColumn(1,"File Name",LVCFMT_LEFT,300,0);
+    //**********************************************
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+CString GetCurrentAppPath(void)//返回当前应用所在路径
+{
+    return CurrentAppPath;
+}
+BOOL FileIfExist(CString cFilename)
+{
+    CStdioFile	file;
+    if (file.Open(cFilename,CFile::modeRead,NULL))//打开成功
+    {
+        file.Close();
+        return TRUE;
+    }
+    return FALSE;
+}
+DWORD GetFileSize(CString cFilename)
+{
+    CStdioFile	file;
+    DWORD       dSize;
+    if (file.Open(cFilename,CFile::modeRead,NULL))//打开成功
+    {
+        dSize = file.GetLength();
+        file.Close();
+        return dSize;
+    }
+    return -1;
+}
+
+BOOL CVoicePromptDlg::ReadConfigFile(void)
+{
+    CStdioFile	file;
+    CString     cFileName;
+    CString		bufRead;
+    ConfigType  eConfigtype;
+
+    cFileName = GetCurrentAppPath() + csSlash + CONFIGFILENAME;//_T("\\")
+
+	if (file.Open(cFileName,CFile::modeRead,NULL))//打开成功
+	{
+		while (file.ReadString(bufRead))
+		{
+			while(bufRead.Right(1) == 13)//删除最后的回车符
+				bufRead = bufRead.Left(bufRead.GetLength() - 1);
+
+            if (bufRead == "Language Begin:")
+            {
+                eConfigtype = CONFIGTYPE_LANGUAGE;
+                continue;
+            }
+            if (bufRead == "Language End")
+            {
+                eConfigtype = CONFIGTYPE_NONE;
+                continue;
+            }
+            if (bufRead == "")
+            {
+                eConfigtype = CONFIGTYPE_NONE;
+                continue;
+            }
+            if (CONFIGTYPE_LANGUAGE == eConfigtype)
+                m_ctlCheckList.AddString(bufRead);
+            else
+                break;
+		}
+		file.Close();
+	}
+    return TRUE;
+}
+void CVoicePromptDlg::OnSysCommand(UINT nID, LPARAM lParam)
+{
+	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	{
+		CAboutDlg dlgAbout;
+		dlgAbout.DoModal();
+	}
+	else
+	{
+		CDialog::OnSysCommand(nID, lParam);
+	}
+}
+
+// If you add a minimize button to your dialog, you will need the code below
+//  to draw the icon.  For MFC applications using the document/view model,
+//  this is automatically done for you by the framework.
+
+void CVoicePromptDlg::OnPaint() 
+{
+	if (IsIconic())
+	{
+		CPaintDC dc(this); // device context for painting
+
+		SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+
+		// Center icon in client rectangle
+		int cxIcon = GetSystemMetrics(SM_CXICON);
+		int cyIcon = GetSystemMetrics(SM_CYICON);
+		CRect rect;
+		GetClientRect(&rect);
+		int x = (rect.Width() - cxIcon + 1) / 2;
+		int y = (rect.Height() - cyIcon + 1) / 2;
+
+		// Draw the icon
+		dc.DrawIcon(x, y, m_hIcon);
+	}
+	else
+	{
+		CDialog::OnPaint();
+	}
+}
+
+// The system calls this to obtain the cursor to display while the user drags
+//  the minimized window.
+HCURSOR CVoicePromptDlg::OnQueryDragIcon()
+{
+	return (HCURSOR) m_hIcon;
+}
+
+void CVoicePromptDlg::OnChangeEditLanguage() 
+{
+	// TODO: If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+	
+	// TODO: Add your control notification handler code here
+	CString cLanguage;
+
+    m_Edit_Language.GetWindowText(cLanguage);
+    if (cLanguage != "")
+        m_Button_AddLanguage.EnableWindow(TRUE);
+    else
+        m_Button_AddLanguage.EnableWindow(FALSE);
+}
+
+void CVoicePromptDlg::OnSelchangeListLanguage() 
+{
+	// TODO: Add your control notification handler code here
+	CString cLanguage;
+
+    int iCount = m_ctlCheckList.GetCount();
+    int i, iSelCount = 0;//m_ctlCheckList.GetSelCount();
+
+    if (m_ctlCheckList.GetCurSel() == 0)
+    {
+        m_Language_Up.EnableWindow(FALSE);
+        m_Language_Down.EnableWindow(TRUE);
+    }
+    else if (m_ctlCheckList.GetCurSel() == iCount - 1)
+    {
+        m_Language_Up.EnableWindow(TRUE);
+        m_Language_Down.EnableWindow(FALSE);
+    }
+    else
+    {
+        m_Language_Up.EnableWindow(TRUE);
+        m_Language_Down.EnableWindow(TRUE);
+    }
+
+    for (i = 0;i < iCount;i++)
+    {
+        if (m_ctlCheckList.GetCheck(i) == 1)
+        {
+            iSelCount++;
+        }
+    }
+    if (iSelCount > 3)
+    {
+        MessageBox("Only select less 3 languages","Clew",MB_ICONINFORMATION|MB_OK);
+        for (i = 0;i < iCount;i++)
+        {
+            if (m_ctlCheckList.GetCheck(i) == 1)
+            {
+                m_ctlCheckList.SetCheck(i,0);
+                break;
+            }
+        }
+        return;
+    }
+    //////////////////////////////////////////////////////////////////////////
+    m_ctlCheckList.GetText(m_ctlCheckList.GetCurSel(),cLanguage);
+    cSelectLanguage = cLanguage;
+    ReadEnumFileInformation(cLanguage);
+}
+
+void CVoicePromptDlg::ReadEnumFileInformation(CString csLanguageIndex)
+{
+    CStdioFile	file;
+    CString     cFileName;
+    CString		bufRead;
+    CString     bufLanguage;
+    CString     cFilePath,cFilesize = "0byte";
+    ConfigType  eConfigtype;
+    int iIndex = 0;
+    DWORD       dAllFilesize = 0,dFilesize;
+
+    cFileName = GetCurrentAppPath() + csSlash + CONFIGFILENAME;//_T("\\")
+    bufLanguage = "Language File Begin: " + csLanguageIndex;
+
+	if (file.Open(cFileName,CFile::modeRead,NULL))//打开成功
+	{
+        m_VoicePromptListCtrl.DeleteAllItems();
+		while (file.ReadString(bufRead))
+		{
+			while(bufRead.Right(1) == 13)//删除最后的回车符
+				bufRead = bufRead.Left(bufRead.GetLength() - 1);
+
+            if (bufRead == "Enum Being:")
+            {
+                eConfigtype = CONFIGTYPE_ENUM;
+                continue;
+            }
+            if ((bufRead == "Enum End") || (bufRead == "Language File End"))
+            {
+                eConfigtype = CONFIGTYPE_NONE;
+                continue;
+            }
+            if (bufRead == bufLanguage)
+            {
+                eConfigtype = CONFIGTYPE_FILEINFO;
+                continue;
+            }
+            if (bufRead == "")
+            {
+                eConfigtype = CONFIGTYPE_NONE;
+                continue;
+            }
+            if (CONFIGTYPE_ENUM == eConfigtype)
+            {
+                int iListCount = m_VoicePromptListCtrl.GetItemCount();
+                m_VoicePromptListCtrl.InsertItem(iListCount,bufRead);
+            }
+            else if (CONFIGTYPE_FILEINFO == eConfigtype)
+            {
+                cFilePath = CurrentAppPath + "\\" + bufRead;
+                m_VoicePromptListCtrl.SetItemText(iIndex,1,cFilePath);
+                if (FileIfExist(cFilePath))
+                {
+                    dFilesize = GetFileSize(cFilePath);
+                    dAllFilesize += dFilesize;
+                    cFilesize.Format("%ldbyte",dFilesize);
+
+                    m_VoicePromptListCtrl.SetItemText(iIndex,2,"Yes");
+                    m_VoicePromptListCtrl.SetItemText(iIndex,3,cFilesize);
+                }
+                else
+                {
+                    m_VoicePromptListCtrl.SetItemText(iIndex,2,"No");
+                    m_VoicePromptListCtrl.SetItemText(iIndex,3,cFilesize);
+                }
+                iIndex++;
+            }
+            else
+            {
+                continue;
+            }
+		}
+		file.Close();
+
+        cFilesize.Format("%d files %ldbyte.Approximately:%5.3fK",iIndex,dAllFilesize,dAllFilesize / fKunit);
+        m_Static_Filesize.SetWindowText(cFilesize);
+	}
+}
+
+
+void CVoicePromptDlg::OnButtonAddlanguage() 
+{
+	// TODO: Add your control notification handler code here
+	CString cSLanguage;
+	int i,iListCount;
+	CString cSList;
+
+	m_Edit_Language.GetWindowText(cSLanguage);
+	cSLanguage.TrimLeft();
+	cSLanguage.TrimRight();
+
+	if (cSLanguage == "")
+	{
+		MessageBox("Please entery language!","Clew",MB_ICONINFORMATION|MB_OK);
+		m_Edit_Language.SetFocus();
+		return;
+	}
+	iListCount = m_ctlCheckList.GetCount();
+	for (i = 0;i < iListCount;i++)
+	{
+		m_ctlCheckList.GetText(i,cSList);
+		if (cSList == cSLanguage)
+		{
+			MessageBox("The langage has existed!","Clew",MB_ICONINFORMATION|MB_OK);
+			m_Edit_Language.SetSel(0,-1);
+			m_Edit_Language.SetFocus();
+			return;
+		}
+	}
+	m_ctlCheckList.AddString(cSLanguage.GetBuffer(cSLanguage.GetLength()));
+    cSLanguage.ReleaseBuffer();
+	m_Edit_Language.SetWindowText("");
+	m_Edit_Language.SetFocus();
+    //////////////////////////////////////////////////////////////////////////
+    //save langauge
+    CStdioFile	file;
+    CString     cFileName;
+    CString		bufRead,csFileContent = "";
+    cFileName = GetCurrentAppPath() + csSlash + CONFIGFILENAME;//_T("\\")
+    if (file.Open(cFileName,CFile::modeRead,NULL))//打开成功
+    {
+        while (file.ReadString(bufRead))
+        {
+            while(bufRead.Right(1) == 13)//删除最后的回车符
+                bufRead = bufRead.Left(bufRead.GetLength() - 1);
+
+            if (bufRead == "Language End")
+            {
+                csFileContent = csFileContent + cSLanguage + "\r\nLanguage End\r\n";
+            }
+            else
+            {
+                csFileContent = csFileContent + bufRead + "\r\n";
+            }
+        }
+        file.Close();
+        csFileContent = csFileContent + "\r\nLanguage File Begin: " + cSLanguage + "\r\n";
+        i = 0;
+        while (DefaultEnumFileinformation[i] != "")
+        {
+            csFileContent = csFileContent + cSLanguage + DefaultEnumFileinformation[i] + "\r\n";
+            i++;
+        }
+        csFileContent = csFileContent + "Language File End\r\n";
+    }
+    if (file.Open(cFileName,CFile::modeReadWrite,NULL))//打开成功
+    {
+        file.WriteString(csFileContent);
+        file.Close();
+    }
+}
+
+void CVoicePromptDlg::OnButtonDeletelanguage() 
+{
+	// TODO: Add your control notification handler code here
+	CString cSLanguage;
+	int i,iListCount;
+
+	iListCount = m_ctlCheckList.GetCount();
+	for (i = 0;i < iListCount;i++)
+	{
+		if (m_ctlCheckList.GetSel(i) == 1)
+		{
+			m_ctlCheckList.GetText(i,cSLanguage);
+			if (MessageBox("Delete " + cSLanguage + "?", "Clew", MB_YESNO|MB_ICONQUESTION)==IDYES)
+			{
+				m_ctlCheckList.DeleteString(i);
+				m_ctlCheckList.SetCurSel((i == iListCount - 1) ? i - 1 : i);
+                if (m_ctlCheckList.GetCount() == 0)
+                {
+                    m_DeleteLanguage.EnableWindow(FALSE);
+                }
+                //////////////////////////////////////////////////////////////////////////
+                //Delete language
+                CStdioFile	file;
+                CString     cFileName,csDeleteString;
+                CString		bufRead,csFileContent = "";
+                BOOL        bFindDeletelanguage = FALSE;
+                cFileName = GetCurrentAppPath() + csSlash + CONFIGFILENAME;//_T("\\")
+
+                csDeleteString = "Language File Begin: " + cSLanguage;
+                if (file.Open(cFileName,CFile::modeRead,NULL))//打开成功
+                {
+                    while (file.ReadString(bufRead))
+                    {
+                        while(bufRead.Right(1) == 13)//删除最后的回车符
+                            bufRead = bufRead.Left(bufRead.GetLength() - 1);
+                        
+                        if (bufRead == cSLanguage)
+                        {
+                            continue;
+                        }
+                        else if (bufRead == csDeleteString)
+                        {
+                            bFindDeletelanguage = TRUE;
+                            continue;
+                        }
+                        else if (bufRead == "Language File End")
+                        {
+                            //if (!bFindDeletelanguage)
+                            csFileContent = csFileContent + bufRead + "\r\n";
+                            bFindDeletelanguage = FALSE;
+                            continue;
+                        }
+                        if (!bFindDeletelanguage)
+                            csFileContent = csFileContent + bufRead + "\r\n";
+                        else
+                            continue;
+                    }
+                    file.Close();
+                }
+                if (file.Open(cFileName,CFile::modeReadWrite,NULL))//打开成功
+                {
+                    file.WriteString(csFileContent);
+                    file.Close();
+                }
+                //////////////////////////////////////////////////////////////////////////
+				break;
+			}
+		}
+	}
+}
+void CVoicePromptDlg::MoveLanguageList(int iDir)
+{
+    int i,iListCount;
+    CString cSLanguage;
+
+    if (0 == iDir)
+        return;
+
+    iListCount = m_ctlCheckList.GetCount();
+    if (iDir > 0)
+    {
+        m_Language_Down.EnableWindow(TRUE);
+        for (i = 0;i < iListCount;i++)
+        {
+            if (m_ctlCheckList.GetSel(i) == 1)
+            {
+                m_ctlCheckList.GetText(i,cSLanguage);
+                m_ctlCheckList.DeleteString(i);
+                m_ctlCheckList.InsertString(i - 1,cSLanguage);
+                m_ctlCheckList.SetCurSel(i - 1);
+                
+                if (i - 1 == 0)
+                    m_Language_Up.EnableWindow(FALSE);
+                break;
+            }
+        }
+    }
+    else
+    {
+        m_Language_Up.EnableWindow(TRUE);
+        for (i = 0;i < iListCount;i++)
+        {
+            if (m_ctlCheckList.GetSel(i) == 1)
+            {
+                m_ctlCheckList.GetText(i,cSLanguage);
+                m_ctlCheckList.DeleteString(i);
+                m_ctlCheckList.InsertString(i + 1,cSLanguage);
+                m_ctlCheckList.SetCurSel(i + 1);
+                
+                if (i + 1 == iListCount - 1)
+                    m_Language_Down.EnableWindow(FALSE);
+                break;
+            }
+        }
+    }
+}
+void CVoicePromptDlg::OnButtonLanguageup() 
+{
+	// TODO: Add your control notification handler code here
+    MoveLanguageList(1);
+}
+
+void CVoicePromptDlg::OnButtonLanguagedown() 
+{
+	// TODO: Add your control notification handler code here
+    MoveLanguageList(-1);
+}
+
+void CVoicePromptDlg::OnButtonOption() 
+{
+	// TODO: Add your control notification handler code here
+	cOptionDialog.DoModal();
+}
+
+CString GetVoicePromptLanguage(void)
+{
+    //CString csLanguage;
+    //m_ctlCheckList.GetText(m_ctlCheckList.GetSel(),csLanguage);
+    return cSelectLanguage;
+}
+
+void CVoicePromptDlg::OnButtonCreateconfig() 
+{
+	// TODO: Add your control notification handler code here
+	int i, iSelCount = 0;
+    int iCount = m_ctlCheckList.GetCount();
+    CString cClew,csLanguage3,csLanguage1,csLanguage;
+    CString csOutConfigName = "";
+
+    for (i = 0;i < iCount;i++)
+    {
+        if (m_ctlCheckList.GetCheck(i) == 1)
+        {
+            m_ctlCheckList.GetText(i,csLanguage);
+            if (iSelCount > 0)
+                csOutConfigName = csOutConfigName + "_" + csLanguage;
+            else
+                csOutConfigName += csLanguage;
+
+            iSelCount++;
+        }
+    }
+    csOutConfigName += ".ini";
+
+    cClew.LoadString(IDS_STRING_CLEW);
+    csLanguage1.LoadString(IDS_STRING_LANGUAGE1);
+    csLanguage3.LoadString(IDS_STRING_LANGUAGE3);
+    if (iSelCount > 3)
+    {
+        MessageBox(csLanguage3,cClew,MB_ICONINFORMATION|MB_OK);
+        return;
+    }
+    if (iSelCount == 0)
+    {
+        MessageBox(csLanguage1,cClew,MB_ICONINFORMATION|MB_OK);
+        return;
+    }
+    //////////////////////////////////////////////////////////////////////////
+    CString cFilename;
+    CString cInitDir = GetCurrentAppPath();
+    CString cSelectFile,cFilter,cdefext;
+    //static char ctxt[100] = ".ini";
+    //static LPTSTR cInitFile;
+    //strcpy(ctxt,csOutConfigName.GetBuffer(csOutConfigName.GetLength()));
+
+    cSelectFile.LoadString(IDS_STRING_SELECTFILE);
+    cFilter.LoadString(IDS_STRING_FILTER_INI);
+    cdefext.LoadString(IDS_STRING_CONFIG);
+    
+    CFileDialogEx open(FALSE,NULL,NULL,
+        OFN_HIDEREADONLY|OFN_EXTENSIONDIFFERENT,cFilter);
+    
+    open.m_ofn.lpstrTitle		= cSelectFile;//"选择文件";
+    open.m_ofn.lpstrInitialDir	= cInitDir;
+    open.m_ofn.lpstrDefExt		= cdefext;//"*.c;*.cpp;*.h";
+    if (open.DoModal() == IDOK)
+    {
+        cFilename = open.GetPathName();
+        //////////////////////////////////////////////////////////////////////////
+        //create config.ini
+        CStdioFile	file;
+
+        if (file.Open(cFilename,CFile::modeWrite|CFile::modeCreate,NULL))//打开成功
+        {
+            CString csConfigOutContentDefine = "",csConfigOutContentUndef = "";
+            for (i = 0;i < iCount;i++)
+            {
+                m_ctlCheckList.GetText(i,csLanguage);
+                if (m_ctlCheckList.GetCheck(i) == 1)
+                {
+                    csConfigOutContentDefine = csConfigOutContentDefine + GetFileListFromConfig(TRUE,csLanguage);
+                }
+                else
+                {
+                    csConfigOutContentUndef = csConfigOutContentUndef + GetFileListFromConfig(FALSE,csLanguage);
+                }
+            }
+            file.WriteString(csConfigOutContentDefine);
+            file.Close();
+        }
+    }
+    /*cInitFile = csOutConfigName.GetBuffer(csOutConfigName.GetLength());
+    open.m_ofn.lpstrFile        = cInitFile;//ctxt;
+    TRY
+    {
+        if (open.DoModal() == IDOK)
+        {
+            cFilename = open.GetPathName();
+        }
+        csOutConfigName.ReleaseBuffer(-1);
+    }
+    CATCH( CFileException , e )
+    {
+        TRACE(_T(" Output fail!"));
+    }
+    END_CATCH*/
+}
+
+CString CVoicePromptDlg::GetFileListFromConfig(BOOL bDefine,CString csLanguage) 
+{
+    CStdioFile	file;
+    CString     cFileName;
+    CString		bufRead;
+    CString     bufLanguage;
+    CString     cFilePath,csLanguagePathList = "";
+    ConfigType  eConfigtype;
+
+    cFileName = GetCurrentAppPath() + csSlash + CONFIGFILENAME;//_T("\\")
+    bufLanguage = "Language File Begin: " + csLanguage;
+
+    if (bDefine)
+        csLanguagePathList = "#define " + csLanguage + "\r\n";
+    else
+        csLanguagePathList = "#undef " + csLanguage + "\r\n";
+
+	if (file.Open(cFileName,CFile::modeRead,NULL))//打开成功
+	{
+        eConfigtype = CONFIGTYPE_NONE;
+		while (file.ReadString(bufRead))
+		{
+			while(bufRead.Right(1) == 13)//删除最后的回车符
+				bufRead = bufRead.Left(bufRead.GetLength() - 1);
+
+            if (bufRead == bufLanguage)
+            {
+                eConfigtype = CONFIGTYPE_FILEINFO;
+                continue;
+            }
+            if ((bufRead == "") || (bufRead == "Language File End"))
+            {
+                eConfigtype = CONFIGTYPE_NONE;
+                continue;
+            }
+            if (CONFIGTYPE_FILEINFO == eConfigtype)
+            {
+                cFilePath = CurrentAppPath + "\\" + bufRead;
+                csLanguagePathList = csLanguagePathList + cFilePath + "\r\n";
+            }
+		}
+		file.Close();
+        csLanguagePathList = csLanguagePathList + "#endif\r\n";
+	}
+    return csLanguagePathList;
+}
+
+void CVoicePromptDlg::OnButtonOutputfiles() 
+{
+	// TODO: Add your control notification handler code here
+    int i, iSelCount = 0;
+    int iCount = m_ctlCheckList.GetCount();
+    CString cClew,csLanguage3,csLanguage1,csLanguage,csOutConfigName;
+
+    for (i = 0;i < iCount;i++)
+    {
+        if (m_ctlCheckList.GetCheck(i) == 1)
+        {
+            m_ctlCheckList.GetText(i,csLanguage);
+            if (iSelCount > 0)
+                csOutConfigName = csOutConfigName + ";" + csLanguage;
+            else
+                csOutConfigName += csLanguage;
+
+            iSelCount++;
+        }
+    }
+    cClew.LoadString(IDS_STRING_CLEW);
+    csLanguage1.LoadString(IDS_STRING_LANGUAGE1);
+    csLanguage3.LoadString(IDS_STRING_LANGUAGE3);
+    if (iSelCount > 3)
+    {
+        MessageBox(csLanguage3,cClew,MB_ICONINFORMATION|MB_OK);
+        return;
+    }
+    if (iSelCount == 0)
+    {
+        MessageBox(csLanguage1,cClew,MB_ICONINFORMATION|MB_OK);
+        return;
+    }
+
+    cOutputFiles cOutfile(NULL,csOutConfigName);
+    cOutfile.DoModal();
+}
+
+void CVoicePromptDlg::OnButtonCountlanguagessize() 
+{
+	// TODO: Add your control notification handler code here
+	int i, iSelCount = 0,iFileCount = 0;
+    int iCount = m_ctlCheckList.GetCount();
+    CString cSLanguage,csCountResult = "";
+    DWORD dLanguagePackSize = 0;
+
+    for (i = 0;i < iCount;i++)
+    {
+        if (m_ctlCheckList.GetCheck(i) == 1)
+        {
+            iSelCount++;
+            //////////////////////////////////////////////////////////////////////////
+            //Count language packs files size
+            int icount;
+            DWORD dsize;
+            CString cResult;
+            m_ctlCheckList.GetText(i,cSLanguage);
+            cResult = GetLanguagePackSize(cSLanguage,&icount,&dsize);
+            csCountResult += cResult;
+            iFileCount += icount;
+            dLanguagePackSize += dsize;
+        }
+    }
+
+    if ((1 <= iSelCount) && (iSelCount <= 3))
+    {
+        CString csLanguageCountResult;
+
+        csLanguageCountResult.Format("%s\r\n%d Language,%d files,amount:%ldbyte,Approximately:%5.3fK",
+            csCountResult,iSelCount,iFileCount,dLanguagePackSize,dLanguagePackSize / fKunit);
+
+        CLanguagePackInfo cDialogLanguageInfo(NULL,csLanguageCountResult);
+        cDialogLanguageInfo.DoModal();
+        return;
+    }
+
+    CString cClew,csLanguage3,csLanguage1;
+    csLanguage1.LoadString(IDS_STRING_LANGUAGE1);
+    csLanguage3.LoadString(IDS_STRING_LANGUAGE3);
+    cClew.LoadString(IDS_STRING_CLEW);
+    if (iSelCount > 3)
+    {
+        MessageBox(csLanguage3,cClew,MB_ICONINFORMATION|MB_OK);
+        return;
+    }
+    if (iSelCount == 0)
+    {
+        MessageBox(csLanguage1,cClew,MB_ICONINFORMATION|MB_OK);
+        return;
+    }
+}
+
+CString CVoicePromptDlg::GetLanguagePackSize(CString csLanguage,int * pFileCount,DWORD * pAllFilesize)
+{
+    CStdioFile	file;
+    CString     cFileName;
+    CString		bufRead;
+    CString     bufLanguage;
+    ConfigType  eConfigtype;
+    int         iFileCount = 0;
+    DWORD       dAllFilesize = 0;
+    CString     csFileinfo,cFilePath;
+
+    cFileName = GetCurrentAppPath() + csSlash + CONFIGFILENAME;//_T("\\")
+    bufLanguage = "Language File Begin: " + csLanguage;
+
+    if (file.Open(cFileName,CFile::modeRead,NULL))//打开成功
+    {
+        while (file.ReadString(bufRead))
+        {
+            while(bufRead.Right(1) == 13)//删除最后的回车符
+				bufRead = bufRead.Left(bufRead.GetLength() - 1);
+
+            if (bufRead == "")
+            {
+                eConfigtype = CONFIGTYPE_NONE;
+                continue;
+            }
+            if (bufRead == bufLanguage)
+            {
+                eConfigtype = CONFIGTYPE_FILEINFO;
+                continue;
+            }
+            if (CONFIGTYPE_FILEINFO == eConfigtype)
+            {
+                cFilePath = CurrentAppPath + "\\" + bufRead;
+                if (FileIfExist(cFilePath))
+                {
+                    iFileCount++;
+                    dAllFilesize += GetFileSize(cFilePath);;
+                }
+            }
+        }
+        file.Close();
+        if (pFileCount != NULL)
+            * pFileCount = iFileCount;
+
+        if (pAllFilesize != NULL)
+            * pAllFilesize = dAllFilesize;
+
+        csFileinfo.Format("Language:%s,%d files,amount:%ldbyte,Approximately:%5.3fK\r\n",csLanguage,iFileCount,
+            dAllFilesize,dAllFilesize / fKunit);
+        return csFileinfo;
+    }
+    else
+    {
+        return "Error";
+    }
+}

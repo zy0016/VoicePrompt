@@ -1,0 +1,543 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\VoicePrompt.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\VoicePrompt.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About VoicePrompt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "VoicePrompt Version Alpha 3.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2006/8 By  Zhao Yong",IDC_STATIC,40,25,
+                    188,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_VOICEPROMPT_DIALOG DIALOGEX 0, 0, 667, 450
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "VoicePrompt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_LANGUAGE,10,30,110,15,ES_AUTOHSCROLL
+    LISTBOX         IDC_LIST_LANGUAGE,10,50,110,355,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Move Top",IDC_BUTTON_MOVETOP,10,410,20,15,BS_BITMAP
+    PUSHBUTTON      "Move Up",IDC_BUTTON_LANGUAGEUP,40,410,20,15,BS_BITMAP
+    PUSHBUTTON      "Move Down",IDC_BUTTON_LANGUAGEDOWN,70,410,20,15,
+                    BS_BITMAP
+    PUSHBUTTON      "Move Below",IDC_BUTTON_MOVEBELOW,100,410,20,15,
+                    BS_BITMAP
+    PUSHBUTTON      "Add language",IDC_BUTTON_ADDLANGUAGE,125,30,65,15
+    PUSHBUTTON      "Delete language",IDC_BUTTON_DELETELANGUAGE,125,51,65,15
+    PUSHBUTTON      "Clear check items",IDC_BUTTON_CLEARALL,125,75,65,15
+    PUSHBUTTON      "Reset List",IDC_BUTTON_RESET,125,100,65,15
+    CONTROL         "List2",IDC_LIST_ENUMINFO,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,195,30,465,375
+    PUSHBUTTON      "Count Selected Language Packs Size...",
+                    IDC_BUTTON_COUNTLANGUAGESSIZE,195,410,135,15
+    PUSHBUTTON      "Output Selected Language Files...",
+                    IDC_BUTTON_OUTPUTFILES,195,430,135,15
+    PUSHBUTTON      "Option...",IDC_BUTTON_OPTION,595,410,65,15
+    DEFPUSHBUTTON   "Close",IDCANCEL,595,430,65,14
+    CTEXT           "Language unit",IDC_STATIC_LANGUAGEINFO,10,4,110,10
+    LTEXT           "Language Information",IDC_STATIC,195,15,95,10
+    RTEXT           "",IDC_STATIC_ALLSIZE,365,15,295,10
+    PUSHBUTTON      "Check Files",IDC_BUTTON_CHECKFILE,525,410,65,15
+    LTEXT           "Input language",IDC_STATIC,10,17,110,10
+    PUSHBUTTON      "Count All Language Packs Size...",
+                    IDC_BUTTON_COUNTALLLANGUAGES,335,410,115,15
+    PUSHBUTTON      "Count Silent Files...",IDC_BUTTON_COUNTSILENT,455,410,
+                    65,15
+    PUSHBUTTON      "Batch Output Language Files...",
+                    IDC_BUTTON_BATCHOUTPUTFILES,335,430,115,15
+END
+
+IDD_DIALOG_ENUMINFO DIALOG DISCARDABLE  0, 0, 379, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_ENUM,55,10,285,194,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FILENAME,55,30,285,170,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_PATH,345,30,25,12
+    DEFPUSHBUTTON   "OK",IDOK,265,55,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,322,55,50,14
+    LTEXT           "Enum name",IDC_STATIC,5,10,45,10
+    LTEXT           "File position",IDC_STATIC,5,30,45,10
+END
+
+IDD_DIALOG_OPTION DIALOG DISCARDABLE  0, 0, 362, 250
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Option"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_DATA_FILENAME,145,15,200,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DATA_VARIABLE,145,35,200,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DATA_PREPARE_CONTENT,145,55,200,45,ES_MULTILINE | 
+                    WS_VSCROLL | WS_HSCROLL
+    EDITTEXT        IDC_EDIT_POS_FILENAME,145,130,200,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_POS_VARIABLE,145,150,200,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_POS_PREPARE_CONTENT,145,170,200,45,ES_MULTILINE | 
+                    WS_VSCROLL | WS_HSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,250,230,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,306,230,50,14
+    LTEXT           "Voice Prompt Data Filename:",IDC_STATIC,10,15,133,10
+    LTEXT           "Voice Prompt Data Variable:",IDC_STATIC,10,35,134,10
+    LTEXT           "Voice Prompt Data Prepare Content",IDC_STATIC,10,55,134,
+                    10
+    LTEXT           "Voice Prompt Pos Filename:",IDC_STATIC,10,130,134,10
+    LTEXT           "Voice Prompt Pos Variable:",IDC_STATIC,10,150,134,10
+    LTEXT           "Voice Prompt Pos Prepare Content",IDC_STATIC,10,170,136,
+                    10
+    GROUPBOX        "Data",IDC_STATIC,5,5,350,100
+    GROUPBOX        "Pos",IDC_STATIC,6,115,350,105
+END
+
+IDD_DIALOG_FILESIZECOUNT DIALOG DISCARDABLE  0, 0, 357, 161
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Language Pack Size Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,285,140,70,14
+    EDITTEXT        IDC_EDIT_LANGUAGEPACKINFORMATION,0,0,357,135,
+                    ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    PUSHBUTTON      "Copy to Clipboard",IDC_BUTTON_COPY,210,140,70,15
+END
+
+IDD_DIALOG_OUTFILES DIALOG DISCARDABLE  0, 0, 442, 86
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Output files"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_SELECTPATH,5,45,400,164,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_SELECTPAHT,410,45,25,12
+    CONTROL         "Output All Files",IDC_RADIO_ALLFILES,"Button",
+                    BS_AUTORADIOBUTTON,215,15,90,10
+    CONTROL         "Output Necessary Files",IDC_RADIO_NEEDFILES,"Button",
+                    BS_AUTORADIOBUTTON,315,15,85,10
+    DEFPUSHBUTTON   "OK",IDOK,330,65,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,386,65,50,14
+    LTEXT           "Suggest you create a fold to save the output files.",
+                    IDC_STATIC,5,15,185,10
+    CONTROL         "Progress1",IDC_PROGRESS_OUTPUT,"msctls_progress32",
+                    PBS_SMOOTH | WS_BORDER,5,65,315,15
+    GROUPBOX        "Output option",IDC_STATIC,210,0,195,35
+END
+
+IDD_DIALOG_BATCHOUTPUTFILES DIALOG DISCARDABLE  0, 0, 677, 391
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Batch Output Language Fils"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LIST_BATCHLANGUAGE,5,20,95,345,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "",IDC_BUTTON_BATCH_TOP,5,370,20,15,BS_BITMAP
+    PUSHBUTTON      "Button2",IDC_BUTTON_BATCH_UP,30,370,20,15,BS_BITMAP
+    PUSHBUTTON      "Button3",IDC_BUTTON_BATCHDOWN,55,370,20,15,BS_BITMAP
+    PUSHBUTTON      "Button4",IDC_BUTTON_BATCHBELOW,80,370,20,15,BS_BITMAP
+    PUSHBUTTON      "-->>",IDC_BUTTON_ADDBATCHITEM,105,105,50,15
+    PUSHBUTTON      "<<--",IDC_BUTTON_DELETE,105,130,50,15
+    CONTROL         "List2",IDC_LIST_BATCHOUTPUT,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,160,20,515,345
+    PUSHBUTTON      "Output All",IDC_BUTTON_BATCHOUTPUT,515,370,50,15
+    DEFPUSHBUTTON   "Close",IDOK,625,370,50,14
+    CTEXT           "Language List",IDC_STATIC,5,5,100,10
+    PUSHBUTTON      "Reset List",IDC_BUTTON_RESET,105,155,50,15
+    PUSHBUTTON      "Option...",IDC_BUTTON_OPTION,570,370,50,15
+    CONTROL         "Progress1",IDC_PROGRESS_BATCHOUTPUTFILES,
+                    "msctls_progress32",PBS_SMOOTH | WS_BORDER,160,370,350,
+                    15
+    LTEXT           "Output files number is:",IDC_STATIC_OUTPUTFILESCOUNT,
+                    160,5,225,10
+END
+
+IDD_DIALOG_BATCHADD DIALOG DISCARDABLE  0, 0, 497, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add Output Language Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_SELECTFILE,105,35,350,265,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_BATCHSELFILE,460,35,30,12
+    COMBOBOX        IDC_COMBO_SELECTPATH,105,55,350,220,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_SELECTFOLD,460,55,30,12
+    DEFPUSHBUTTON   "OK",IDOK,385,75,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,440,75,50,14
+    LTEXT           "You select languages is:",IDC_STATIC_LANGUAGES,5,10,385,
+                    10
+    LTEXT           "Select Language File Name:",IDC_STATIC,5,35,95,10
+    LTEXT           "Select Output Path:",IDC_STATIC,5,55,95,10
+END
+
+IDD_DIALOG_BATCH_OUTPUT_OPTION DIALOG DISCARDABLE  0, 0, 422, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Batch Output Option"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_CHOOSELANGUAGE_FOLD,135,15,245,15,
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_CHOOSEFOLD,385,15,30,15
+    EDITTEXT        IDC_EDIT_BATCH_OUTPUTROOT_FOLD,135,35,245,15,
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_LANGUAGEROOT_FOLD,385,35,30,15
+    DEFPUSHBUTTON   "OK",IDOK,310,55,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,365,55,50,14
+    LTEXT           "Batch Output Choose Language Fold",IDC_STATIC,5,17,125,
+                    10
+    LTEXT           "Batch Output Language Root Fold",IDC_STATIC,5,37,125,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,0,0,4
+ PRODUCTVERSION 3,0,0,4
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x29L
+#else
+ FILEFLAGS 0x28L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Make voice prompt data for MotoFone mobile\0"
+            VALUE "CompanyName", "Motorola(China) Technologies Ltd. \0"
+            VALUE "FileDescription", "VoicePrompt MFC Application\0"
+            VALUE "FileVersion", "3, 0, 0, 4\0"
+            VALUE "InternalName", "VoicePrompt Application\0"
+            VALUE "LegalCopyright", "Copyright (C) Motorola 2006 Zhao Yong\0"
+            VALUE "LegalTrademarks", "None\0"
+            VALUE "OriginalFilename", "VoicePrompt.EXE\0"
+            VALUE "PrivateBuild", "Alpha 3.0\0"
+            VALUE "ProductName", "VoicePrompt output tool.\0"
+            VALUE "ProductVersion", "3, 0, 0, 4\0"
+            VALUE "SpecialBuild", "Alpha 3.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_VOICEPROMPT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 660
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 443
+    END
+
+    IDD_DIALOG_ENUMINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 372
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+
+    IDD_DIALOG_OPTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 355
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_DIALOG_FILESIZECOUNT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 350
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+
+    IDD_DIALOG_OUTFILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 435
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
+    END
+
+    IDD_DIALOG_BATCHOUTPUTFILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 670
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 384
+    END
+
+    IDD_DIALOG_BATCHADD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 490
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DIALOG_BATCH_OUTPUT_OPTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 415
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_DELETE       BITMAP  MOVEABLE PURE   "res\\DEL.BMP"
+IDB_BITMAP_NEW          BITMAP  MOVEABLE PURE   "res\\NEW.BMP"
+IDB_BITMAP_UP           BITMAP  MOVEABLE PURE   "res\\bitmap_u.bmp"
+IDB_BITMAP_BELOW        BITMAP  MOVEABLE PURE   "res\\bitmap_m.bmp"
+IDB_BITMAP_TOP          BITMAP  MOVEABLE PURE   "res\\bitmap_t.bmp"
+IDB_BITMAP_DOWN         BITMAP  MOVEABLE PURE   "res\\bitmap_d.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About VoicePrompt..."
+    IDS_STRING_MOUSECLEW    "Click mouse right button"
+    IDS_STRING_ENUMNAME     "Enum Name"
+    IDS_STRING_FILENAME     "File Name"
+    IDS_STRING_LISTCTRL_ENUM "Double click the to select enum name."
+    IDS_STRING_LISTCTRL_FILENAME "Double click the to select file name."
+    IDS_STRING_FILEEXIST    "Exist"
+    IDS_STRING_MENUADD      "ADD"
+    IDS_STRING_MENUMODIFY   "Modify"
+    IDS_STRING_MENUDELETE   "Delete"
+    IDS_STRING_SELECTFILE   "Select file"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_FILTER       "Amr(*.amr)|*.amr|"
+    IDS_STRING_DEFAULT_EXTENTNAME "*.amr"
+    IDS_STRING_CLEW         "Clew"
+    IDS_STRING_FINDSOURFILEFAIL "The file %s isn't exist,please select again."
+    IDS_STRING_INPUTENUM    "Input enum name."
+    IDS_STRING_INPUTFILENAME "Input file name."
+    IDS_STRING_FILESIZE     "Size"
+    IDS_STRING_LANGUAGE3    "Only select less 3 languages!"
+    IDS_STRING_LANGUAGE1    "Please select 1 languages at least!"
+    IDS_STRING_FILTER_INI   "Ini(*.ini)|*.ini|"
+    IDS_STRING_CONFIG       "*.ini"
+    IDS_STRING_SELECTFOLD   "Select fold and press [OK] button."
+    IDS_STRING_INPUTPATH    "Please input path."
+    IDS_STRING_FINDSOURFOLDFAIL 
+                            "Can't find the ""%s"" fold,do you want to create it?"
+    IDS_STRING_CONFIRMLANFILE 
+                            "The first language is ""%s"",the language file's name is ""%s"" for selectting language,do you confirm the file is right?"
+    IDS_STRING_CLEWSELLAN   "Please reselect the voice prompt file for selecting language."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_LANSEQUENCE2 """,are you sure the sequece is right?"
+    IDS_STRING_LANSEQUENCE11 "You select the language is """
+    IDS_STRING_LANSEQUENCE12 "You select the languages are """
+    IDS_STRING_CHANGEFILENAME 
+                            "Could you change the ""%s"" to ""%s"" in ""%s""?"
+    IDS_STRING_YES          "Yes"
+    IDS_STRING_OPTIONCLEW   "Please input all information!"
+    IDS_STRING_ENUMEXIST    "The enum has existed!"
+    IDS_STRING1_SELECT3LANGUAGE "Only select less 3 languages!"
+    IDS_STRING_NO           "No"
+    IDS_STRING_ENTERLANGUAGE "Please enter language!"
+    IDS_STRING_LANGUAGEEXIST "The langage has existed!"
+    IDS_STRING_CHECKCOMPLETE "Check complete!"
+    IDS_STRING_FILESIZEINFO "%ldbyte"
+    IDS_STRING_DELETELANGUAGE "Delete ""%s"" language?"
+    IDS_STRING_CANNOTFINDFILE "Can't find the ""%s"" file."
+    IDS_STRING_ANDSTRING    """ and """
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_SINGLELANINFO "%d files %ldbyte. Approximately:%5.3fK"
+    IDS_STRING_SINGLELANACCOUNT 
+                            "Language:%s,%d files,amount:%ldbyte,Approximately:%5.3fK\r\n"
+    IDS_STRING_LANGUAGEACCOUNT 
+                            "%s\r\n%d Language,%d files,amount:%ldbyte,Approximately:%5.3fK"
+    IDS_STRING_CANNOTWRITEFILE "Can't write the ""%s"" file!"
+    IDS_STRING_CANNOTWRITEFILES "Can't write the ""%s"" and ""%s""!"
+    IDS_STRING_OUTPUTCOMPLETE "Output complete!"
+    IDS_STRING_CANNOTREADFILE "Can't read the ""%s"" file!"
+    IDS_STRING_CANNOTOPENFOLD "Can't open ""%s""!"
+    IDS_STRING_LANGUAGECOUNT "%d languages"
+    IDS_STRING_SELECTLANGUAGE "You select languages is:%s"
+    IDS_STRING_BATCH_OUTPUTLAN "Output Language"
+    IDS_STRING_BATCH_SELLANFILE "Select Language file"
+    IDS_STRING_BATCH_OUTFOLD "Output Path"
+    IDS_STRING_BATCH_ADD_DIALOG "Add Output Language Information"
+    IDS_STRING_AND          "and"
+    IDS_STRING_BATCH_MODIFY "Modify Output Language Information"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_BATCHDELETE  "Delete the %s item?"
+    IDS_STRING_BATCHINVALIDDATA 
+                            "The %s item has invalid data,please check it again!"
+    IDS_STRING_CANNOTCHECKOUTFILE 
+                            "The ""%s"" file is readonly,you must check out it."
+    IDS_STRING_CLEW_SETFOLD "You must set the folds for batch output."
+    IDS_STRING_BATCHOUTPUT_PACKCLEW 
+                            "The %s language pack size is larger than 150k,do you want to output it?"
+    IDS_STRING_OUTPUTCLEW   "Folds number is %d,%d files will be outputted."
+    IDS_STRING_LANGUAGESIZEINFO "Language Pack Size Information"
+    IDS_STRING_BATCHOUTPUTRESUTL "Output Result."
+    IDS_STRING_BATCH_SIZE_INFO "%ldbyte %5.3fK"
+    IDS_STRING_CREATE_PLACEFILE 
+                            "Can not find the ""%s"" file, create a place file for ""%s"" language?"
+    IDS_STRING_ADDENUMCLEW  "The function has been disabled temporarily."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\VoicePrompt.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
